@@ -1,0 +1,4 @@
+[submodule "src/main/resources"]
+	path = src/main/resources
+	url = https://github.com/dnd-side-project/dnd-10th-5-backend.git
+	branch = dev
