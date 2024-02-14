@@ -15,7 +15,10 @@ public class SecurityConfig {
 
     private static final String[] PERMIT_URLS = {
             /* swagger */
-            "/v3/api-docs/**", "/swagger-ui/**", "/swagger-resources", "/swagger-resources/**"
+            "/v3/api-docs/**", "/swagger-ui/**", "/swagger-resources", "/swagger-resources/**",
+
+            /* health check */
+            "/health"
     };
 
     @Bean
