@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.util.ArrayList;
@@ -45,8 +46,8 @@ public class ErrorResponse {
         return new ErrorResponse(errorCode, CustomFieldError.of(constraintViolations));
     }
 
-    public static ErrorResponse of(final ErrorCode errorCode, final String missingParameterName) {
-        return new ErrorResponse(errorCode, CustomFieldError.of(missingParameterName, "", "parameter must required"));
+    public static ErrorResponse of(final ErrorCode errorCode, final String message) {
+        return new ErrorResponse(errorCode, CustomFieldError.of("", "", message));
     }
 
     public static ErrorResponse of(final ErrorCode errorCode) {
@@ -57,10 +58,12 @@ public class ErrorResponse {
         return new ErrorResponse(code, errors);
     }
 
-    public static ErrorResponse of(MethodArgumentTypeMismatchException e) {
-        final String value = e.getValue() == null ? "" : e.getValue().toString();
-        final List<CustomFieldError> errors = CustomFieldError.of(e.getName(), value, e.getErrorCode());
-        return new ErrorResponse(CommonErrorCode.INVALID_INPUT_VALUE, errors);
+    public static ErrorResponse of(final ErrorCode code, final MethodArgumentTypeMismatchException e) {
+        return new ErrorResponse(code, CustomFieldError.of(e));
+    }
+
+    public static ErrorResponse of(final ErrorCode code, final MissingServletRequestParameterException e) {
+        return new ErrorResponse(code, CustomFieldError.of(e));
     }
 
 
@@ -100,9 +103,18 @@ public class ErrorResponse {
                     .map(error -> new CustomFieldError(
                             error.getPropertyPath().toString(),
                             "",
-                            error.getMessageTemplate()
+                            error.getMessage()
                     ))
                     .collect(Collectors.toList());
+        }
+
+        public static List<CustomFieldError> of(final MethodArgumentTypeMismatchException e) {
+            final String value = e.getValue() == null ? "" : e.getValue().toString();
+            return CustomFieldError.of(e.getName(), value, e.getErrorCode());
+        }
+
+        public static List<CustomFieldError> of(final MissingServletRequestParameterException e) {
+            return CustomFieldError.of(e.getParameterName(), "", e.getMessage());
         }
     }
 }

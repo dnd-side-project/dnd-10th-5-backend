@@ -4,6 +4,7 @@ import com.dnd.favolink.global.common.response.ErrorResponse;
 import com.dnd.favolink.global.error.code.CommonErrorCode;
 import com.dnd.favolink.global.error.code.ErrorCode;
 import com.dnd.favolink.global.error.exception.BusinessException;
+import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,6 +34,13 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(ConstraintViolationException.class)
+    protected ResponseEntity<ErrorResponse> handleConstraintViolationException(ConstraintViolationException e) {
+        log.error("ConstraintViolationException", e);
+        final ErrorResponse response = ErrorResponse.of(CommonErrorCode.INVALID_INPUT_VALUE, e.getConstraintViolations());
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     protected ResponseEntity<ErrorResponse> handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e) {
         log.error("HttpRequestMethodNotSupportedException", e);
@@ -43,14 +51,14 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     protected ResponseEntity<ErrorResponse> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException e) {
         log.error("MethodArgumentTypeMismatchException", e);
-        final ErrorResponse response = ErrorResponse.of(CommonErrorCode.TYPE_MISMATCH);
+        final ErrorResponse response = ErrorResponse.of(CommonErrorCode.TYPE_MISMATCH, e);
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(MissingServletRequestParameterException.class)
     protected ResponseEntity<ErrorResponse> handleException(MissingServletRequestParameterException e) {
         log.error("MissingServletRequestParameterException", e);
-        final ErrorResponse response = ErrorResponse.of(CommonErrorCode.MISSING_REQUEST_PARAMS);
+        final ErrorResponse response = ErrorResponse.of(CommonErrorCode.MISSING_REQUEST_PARAMS, e);
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
