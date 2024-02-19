@@ -2,6 +2,7 @@ package com.dnd.favolink.domain.auth.controller;
 
 import com.dnd.favolink.domain.auth.dto.request.SignUpRequest;
 import com.dnd.favolink.domain.auth.dto.response.LoginResponse;
+import com.dnd.favolink.domain.auth.dto.request.RefreshRequest;
 import com.dnd.favolink.domain.auth.dto.response.TokenResponse;
 import com.dnd.favolink.domain.auth.service.AuthService;
 import com.dnd.favolink.domain.auth.service.KakaoService;
@@ -27,6 +28,12 @@ public class AuthController {
     @PostMapping("/sign-up")
     public ResponseEntity<TokenResponse> signUp(@RequestBody SignUpRequest signUpRequest) {
         TokenResponse tokenResponse = authService.signUp(signUpRequest);
+        return BaseResponse.ok(tokenResponse);
+    }
+
+    @PostMapping("/refresh")
+    public ResponseEntity<TokenResponse> refresh(@RequestBody RefreshRequest refreshRequest) {
+        TokenResponse tokenResponse = authService.refresh(refreshRequest);
         return BaseResponse.ok(tokenResponse);
     }
 }
