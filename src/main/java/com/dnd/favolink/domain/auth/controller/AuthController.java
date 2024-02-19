@@ -9,6 +9,7 @@ import com.dnd.favolink.domain.auth.service.KakaoService;
 import com.dnd.favolink.global.common.response.BaseResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
@@ -35,5 +36,11 @@ public class AuthController {
     public ResponseEntity<TokenResponse> refresh(@RequestBody RefreshRequest refreshRequest) {
         TokenResponse tokenResponse = authService.refresh(refreshRequest);
         return BaseResponse.ok(tokenResponse);
+    }
+
+    @GetMapping("/logout")
+    public ResponseEntity<String> logout(@AuthenticationPrincipal Long userId) {
+        authService.logout(userId);
+        return BaseResponse.ok("로그아웃 성공");
     }
 }

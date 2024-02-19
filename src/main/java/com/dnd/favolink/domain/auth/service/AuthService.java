@@ -53,6 +53,10 @@ public class AuthService {
         return createTokens(userId);
     }
 
+    public void logout(Long userId) {
+        redisService.delete(REFRESH_TOKEN, userId.toString());
+    }
+
     private TokenResponse createTokens(Long userId) {
         String accessToken = jwtTokenProvider.createAccessToken(userId);
         String refreshToken = jwtTokenProvider.createRefreshToken(userId);
