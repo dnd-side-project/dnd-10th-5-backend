@@ -21,7 +21,10 @@ public class SecurityConfig {
             "/v3/api-docs/**", "/swagger-ui/**", "/swagger-resources", "/swagger-resources/**",
 
             /* health check */
-            "/health"
+            "/health",
+
+            /* apis */
+            "/auth/**"
     };
 
     private final JwtTokenProvider jwtTokenProvider;
