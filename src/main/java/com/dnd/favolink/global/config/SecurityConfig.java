@@ -2,6 +2,8 @@ package com.dnd.favolink.global.config;
 
 import com.dnd.favolink.global.jwt.JwtAuthenticationFilter;
 import com.dnd.favolink.global.jwt.JwtTokenProvider;
+import com.dnd.favolink.global.jwt.error.CustomAuthenticationEntryPoint;
+import com.dnd.favolink.global.jwt.error.JwtExceptionFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -38,7 +40,10 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize ->
                         authorize.requestMatchers(PERMIT_URLS).permitAll()
                                 .anyRequest().authenticated())
-                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
+                .exceptionHandling(exceptionConfig ->
+                        exceptionConfig.authenticationEntryPoint(new CustomAuthenticationEntryPoint()))
+                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new JwtExceptionFilter(), JwtAuthenticationFilter.class);
         return http.build();
     }
 }
