@@ -8,7 +8,8 @@ import com.dnd.favolink.domain.user.entity.LoginType;
 import com.dnd.favolink.domain.user.entity.User;
 import com.dnd.favolink.domain.user.repository.UserRepository;
 import com.dnd.favolink.global.error.exception.BusinessException;
-import com.dnd.favolink.global.jwt.JwtErrorCode;
+import com.dnd.favolink.global.jwt.error.CustomJwtException;
+import com.dnd.favolink.global.jwt.error.JwtErrorCode;
 import com.dnd.favolink.global.jwt.JwtTokenProvider;
 import com.dnd.favolink.global.redis.RedisService;
 import lombok.RequiredArgsConstructor;
@@ -65,18 +66,18 @@ public class AuthService {
 
     private void validateToken(String token) {
         if (token == null || !jwtTokenProvider.validateToken(token)) {
-            throw new BusinessException(JwtErrorCode.INVALID_REFRESH_TOKEN);
+            throw new CustomJwtException(JwtErrorCode.INVALID_TOKEN);
         }
     }
 
     private void validateTokenComparingRedis(String token, Long userId) {
         if (!redisService.hasKey(REFRESH_TOKEN, userId.toString())) {
-            throw new BusinessException(JwtErrorCode.INVALID_REFRESH_TOKEN);
+            throw new CustomJwtException(JwtErrorCode.INVALID_TOKEN);
         }
 
         String redisToken = redisService.get(REFRESH_TOKEN, userId.toString());
         if (!redisToken.equals(token)) {
-            throw new BusinessException(JwtErrorCode.INVALID_REFRESH_TOKEN);
+            throw new CustomJwtException(JwtErrorCode.INVALID_TOKEN);
         }
     }
 }

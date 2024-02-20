@@ -1,5 +1,7 @@
 package com.dnd.favolink.global.jwt;
 
+import com.dnd.favolink.global.jwt.error.CustomJwtException;
+import com.dnd.favolink.global.jwt.error.JwtErrorCode;
 import com.dnd.favolink.global.redis.RedisService;
 import io.jsonwebtoken.*;
 import jakarta.annotation.PostConstruct;
@@ -83,10 +85,13 @@ public class JwtTokenProvider {
             return !claims.getBody().getExpiration().before(new Date());
         } catch (SignatureException | MalformedJwtException e) {
             log.info("JWT 토큰이 유효하지 않습니다.");
+            throw new CustomJwtException(JwtErrorCode.INVALID_TOKEN);
         } catch (ExpiredJwtException e) {
             log.info("JWT 토큰이 만료되었습니다.");
+            throw new CustomJwtException(JwtErrorCode.EXPIRED_TOKEN);
         } catch (UnsupportedJwtException e) {
             log.info("지원하지 않는 JWT 토큰입니다.");
+            throw new CustomJwtException(JwtErrorCode.INVALID_TOKEN);
         } catch (IllegalArgumentException e) {
             log.info("JWT 토큰이 잘못되었습니다.");
         }
