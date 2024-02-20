@@ -1,20 +1,22 @@
 package com.dnd.favolink.link.controller;
 
-import com.dnd.favolink.global.common.response.BaseResponse;
+import com.dnd.favolink.link.controller.dto.request.LinkDeleteRequest;
 import com.dnd.favolink.link.controller.dto.request.LinkDetailRequest;
+import com.dnd.favolink.link.controller.dto.request.SpaceChangeRequest;
 import com.dnd.favolink.link.controller.dto.response.LinkDetailResponse;
-import com.dnd.favolink.link.controller.dto.response.LinkOverviewResponse;
 import com.dnd.favolink.link.controller.dto.response.LinksResponse;
-import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController("/link")
+@RestController
+@RequestMapping("/links")
 public class LinkController {
     @GetMapping
     public LinkDetailResponse getLink(@RequestParam int linkId) {
@@ -36,8 +38,18 @@ public class LinkController {
 
     }
 
+    @PutMapping
+    public void updateLink(@RequestBody LinkDetailRequest linkDetailRequest) {
+
+    }
+
+    @PutMapping("/change-space")
+    public void changeSpace(@RequestBody SpaceChangeRequest spaceChangeRequest) {
+
+    }
+
     @DeleteMapping
-    public void deleteLink(@RequestParam int linkId) {
+    public void deleteLink(@RequestBody LinkDeleteRequest linkDeleteRequest) {
 
     }
 }
