@@ -4,5 +4,6 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
 @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
-public record Profile(String nickname, String profileImageUrl) {
+public record Profile(String nickname,
+                      String profileImageUrl) {
 }
