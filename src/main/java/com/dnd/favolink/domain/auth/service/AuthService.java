@@ -71,7 +71,7 @@ public class AuthService {
     }
 
     private void validateTokenComparingRedis(String token, Long userId) {
-        if (!redisService.hasKey(REFRESH_TOKEN, userId.toString())) {
+        if (redisService.hasNoKey(REFRESH_TOKEN, userId.toString())) {
             throw new CustomJwtException(JwtErrorCode.INVALID_TOKEN);
         }
 

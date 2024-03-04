@@ -58,4 +58,12 @@ public class RedisService {
     public Boolean hasKey(RedisPrefix prefix, String key) {
         return redisTemplate.hasKey(prefix.name() + key);
     }
+
+    public Boolean hasNoKey(String key) {
+        return !redisTemplate.hasKey(key);
+    }
+
+    public Boolean hasNoKey(RedisPrefix prefix, String key) {
+        return !redisTemplate.hasKey(prefix.name() + key);
+    }
 }
