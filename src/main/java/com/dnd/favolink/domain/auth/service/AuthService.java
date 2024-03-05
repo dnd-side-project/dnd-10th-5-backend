@@ -48,7 +48,7 @@ public class AuthService {
 
     public TokenResponse refresh(RefreshRequest refreshRequest) {
         String token = refreshRequest.refreshToken();
-        validateToken(token);
+        jwtTokenProvider.validateToken(token);
         Long userId = jwtTokenProvider.getUserId(token);
         validateTokenComparingRedis(token, userId);
         return createTokens(userId);
@@ -62,12 +62,6 @@ public class AuthService {
         String accessToken = jwtTokenProvider.createAccessToken(userId);
         String refreshToken = jwtTokenProvider.createRefreshToken(userId);
         return new TokenResponse(accessToken, refreshToken);
-    }
-
-    private void validateToken(String token) {
-        if (token == null || !jwtTokenProvider.validateToken(token)) {
-            throw new CustomJwtException(JwtErrorCode.INVALID_TOKEN);
-        }
     }
 
     private void validateTokenComparingRedis(String token, Long userId) {
