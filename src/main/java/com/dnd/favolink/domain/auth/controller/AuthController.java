@@ -59,7 +59,9 @@ public class AuthController {
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "access, refresh 토큰"),
             @ApiResponse(responseCode = "400", description = "code: J-000 | message: 유효하지 않은 jwt 토큰입니다. <br>" +
-                    "code: J-001 | message: 만료된 jwt 토큰입니다.",
+                    "code: J-001 | message: 만료된 jwt 토큰입니다. <br>" +
+                    "code: J-002 | message: 토큰을 갱신할 수 없습니다. <br>" +
+                    "code: J-003 | message: 토큰이 필요합니다.",
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     @PostMapping("/refresh")
