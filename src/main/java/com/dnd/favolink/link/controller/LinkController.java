@@ -9,14 +9,7 @@ import com.dnd.favolink.link.controller.dto.response.LinksResponse;
 import com.dnd.favolink.link.domain.PeriodOfNoViewing;
 import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/links")
@@ -25,7 +18,7 @@ public class LinkController {
      * 링크 조회 메서드
      */
     @GetMapping
-    public LinkDetailResponse getLink(@RequestParam int linkId) {
+    public LinkDetailResponse getLink(@PathVariable int linkId) {
         return null;
     }
 
@@ -62,7 +55,7 @@ public class LinkController {
      * 링크 수정 메서드
      */
     @PutMapping
-    public void updateLink(@RequestBody LinkUpdateRequest linkUpdateRequest) {
+    public void updateLink(@PathVariable int linkId, @RequestBody LinkUpdateRequest linkUpdateRequest) {
 
     }
 
