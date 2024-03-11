@@ -79,4 +79,18 @@ public class AuthController {
         authService.logout(userId);
         return BaseResponse.ok("로그아웃 성공");
     }
+
+    @Operation(summary = "🔐 토큰 만료기한 조회", description = "유효한 토큰인 경우, 해당 토큰의 만료기한을 조회할 수 있습니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "토큰의 만료기한 (yyyy-MM-dd HH:mm:ss)"),
+            @ApiResponse(responseCode = "400", description = "code: J-000 | message: 유효하지 않은 jwt 토큰입니다. <br>" +
+                    "code: J-001 | message: 만료된 jwt 토큰입니다. <br>" +
+                    "code: J-003 | message: 토큰이 필요합니다.",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    })
+    @GetMapping("/expiration")
+    public ResponseEntity<String> getExpiration(@RequestParam String token) {
+        String expiration = authService.getExpiration(token);
+        return BaseResponse.ok(expiration);
+    }
 }

@@ -15,6 +15,9 @@ import com.dnd.favolink.global.redis.RedisService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import static com.dnd.favolink.global.redis.RedisPrefix.REFRESH_TOKEN;
 
 @Service
@@ -56,6 +59,13 @@ public class AuthService {
 
     public void logout(Long userId) {
         redisService.delete(REFRESH_TOKEN, userId.toString());
+    }
+
+    public String getExpiration(String token) {
+        jwtTokenProvider.validateToken(token);
+        Date expiration = jwtTokenProvider.getExpiration(token);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        return dateFormat.format(expiration);
     }
 
     private TokenResponse createTokens(Long userId) {

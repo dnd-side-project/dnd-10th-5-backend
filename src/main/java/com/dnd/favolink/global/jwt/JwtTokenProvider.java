@@ -101,4 +101,9 @@ public class JwtTokenProvider {
         }
         return false;
     }
+
+    public Date getExpiration(String jwtToken) {
+        Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(jwtToken);
+        return claims.getBody().getExpiration();
+    }
 }
