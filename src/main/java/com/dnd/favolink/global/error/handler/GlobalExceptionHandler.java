@@ -4,6 +4,7 @@ import com.dnd.favolink.global.common.response.ErrorResponse;
 import com.dnd.favolink.global.error.code.CommonErrorCode;
 import com.dnd.favolink.global.error.code.ErrorCode;
 import com.dnd.favolink.global.error.exception.BusinessException;
+import com.dnd.favolink.global.jwt.error.CustomJwtException;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -72,6 +73,14 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(BusinessException.class)
     protected ResponseEntity<ErrorResponse> handleBusinessException(BusinessException e) {
         log.error("BusinessException", e);
+        ErrorCode errorCode = e.getErrorCode();
+        final ErrorResponse response = ErrorResponse.of(errorCode);
+        return new ResponseEntity<>(response, errorCode.getStatus());
+    }
+
+    @ExceptionHandler(CustomJwtException.class)
+    protected ResponseEntity<ErrorResponse> handleJwtException(CustomJwtException e) {
+        log.error("CustomJwtException", e);
         ErrorCode errorCode = e.getErrorCode();
         final ErrorResponse response = ErrorResponse.of(errorCode);
         return new ResponseEntity<>(response, errorCode.getStatus());
