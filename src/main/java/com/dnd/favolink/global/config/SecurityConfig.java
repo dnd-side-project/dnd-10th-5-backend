@@ -19,7 +19,10 @@ public class SecurityConfig {
             "/v3/api-docs/**", "/swagger-ui/**", "/swagger-resources", "/swagger-resources/**",
 
             /* health check */
-            "/health"
+            "/health",
+
+            /* S3 presigned-url */
+            "/s3/presigned-url"
     };
 
     @Bean
